@@ -16,9 +16,11 @@ public class BoardService {
 	@Autowired
 	private BoardMapper mapper;
 
-	public List<Board> listBoard() {
+	public List<Board> listBoard(Integer page) {
+		// 화면에 내가 원하는 갯수만을 보여주고 싶을 때, 
+		Integer firstIndex = (page - 1) * 10;
 		
-		List<Board> list = mapper.selectAll();
+		List<Board> list = mapper.selectAll(firstIndex);
 		return list;
 	}
 
@@ -37,6 +39,19 @@ public class BoardService {
 
 		int cnt = mapper.delecteById(id);
 		return cnt == 1;
+	}
+
+	// Board 값들을 받기 위해서 dto Board 넣어줌
+	// insert Query의 리턴 값은 int 이므로 int 를 반환하고
+	// boolean 으로 자료형을 줬으므로 int == 1 이면 true 반환되게 함
+	public boolean insertBoard(Board board) {
+		int cnt = mapper.insert(board);
+		return cnt == 1;
+
+	}
+
+	public Integer countAll() {
+		return mapper.countAll();
 	}
 
 }
