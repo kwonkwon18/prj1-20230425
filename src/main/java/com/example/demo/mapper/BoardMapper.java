@@ -13,81 +13,79 @@ import com.example.demo.domain.Board;
 
 @Mapper
 public interface BoardMapper {
-	
-	@Select(
-			"""
-			select 
-					id,
-					title,
-					writer,
-					inserted
-			  from Board 
-			  ORDER BY id desc
-			  limit #{firstIndex}, 8;
-					"""
-			)
-	List<Board> selectAll(Integer firstIndex);
-
 
 	@Select("""
-			SELECT 
-				*
-				from Board
-				WHERE id = #{id} 
+			SELECT
+				id,
+				title,
+				writer,
+				inserted
+			FROM Board
+			ORDER BY id DESC
+			""")
+	List<Board> selectAll();
+
+	@Select("""
+			SELECT *
+			FROM Board
+			WHERE id = #{id}
 			""")
 	Board selectById(Integer id);
 
-
-	
 	@Update("""
-			update Board
+			UPDATE Board
 			SET
 				title = #{title},
 				body = #{body},
 				writer = #{writer}
-			WHERE id = #{id}
+			WHERE
+				id = #{id}
 			""")
 	int update(Board board);
 
-
-	
-	
 	@Delete("""
-			delete from Board
-			where id = #{id}
-			
+			DELETE FROM Board
+			WHERE id = #{id}
 			""")
-	int delecteById(Integer id);
+	int deleteById(Integer id);
 
-
-	
-	
-	// insert문 추가
-	// title, body, writer 만 추가하면 됨 (나머지는 자동추가)
-	// #{] 를 활용하여 값을 넣어줄 준비를 함
-	// dto Board 를 넣어 값을 받아줄 수 있게 하였다. 
 	@Insert("""
-			insert into Board
-			(title, body, writer)
-			values (#{title}, #{body}, #{writer})
+			INSERT INTO Board (title, body, writer)
+			VALUES (#{title}, #{body}, #{writer})
 			""")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
 
+	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT
+				id,
+				title,
+				writer,
+				inserted
+			FROM Board
+			WHERE
+				title LIKE #{pattern}
+				OR body LIKE #{pattern}
+				OR writer LIKE #{pattern}
+			ORDER BY id DESC
+			LIMIT #{startIndex}, #{rowPerPage}
+			</script>
+			""")
+	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
 
 	@Select("""
-			SELECT count(*) From Board;
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT COUNT(*)
+			FROM Board
+			WHERE
+				title LIKE #{pattern}
+				OR body LIKE #{pattern}
+				OR writer LIKE #{pattern}
+			</script>
 			""")
-	Integer countAll();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	Integer countAll(String search);
 
 }

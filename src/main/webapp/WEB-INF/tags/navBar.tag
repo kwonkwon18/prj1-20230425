@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ attribute name = "current" %>
+<%@ attribute name="current"%>
 
 <!-- navbar 만들기 tag를 활용하여 만들기-->
 <!-- 		<div>
@@ -11,27 +11,26 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2">
 	<div class="container-lg">
-		<a class="navbar-brand" href="/list">
-		<img src="/img/cookie.jpg" alt="" height = "100" width = "200"/>
+		<a class="navbar-brand" href="/list"> <img src="/img/cookie.jpg" alt="" height="100" width="200" />
 
-</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-			data-bs-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link ${current eq 'list' ? 'active' : '' }" href="/list">목록</a>
-				</li>
-				<li class="nav-item"><a class="nav-link ${current eq 'add' ? 'active' : '' }" href="/add">글쓰기</a>
-				</li>
+				<li class="nav-item"><a class="nav-link ${current eq 'list' ? 'active' : '' }" href="/list">목록</a></li>
+				<li class="nav-item"><a class="nav-link ${current eq 'add' ? 'active' : '' }" href="/add">글쓰기</a></li>
 			</ul>
-			<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </form>
+
+			<!-- search 폼 -->
+			<form action="/list" class="d-flex" role="search">
+				<input value = "${param.search }" name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
+
 		</div>
 	</div>
 </nav>
