@@ -28,6 +28,18 @@
 						<label for="" class="form-label">제목</label>
 						<input type="text" class="form-control" value="${board.title }" readonly />
 					</div>
+					
+					<!-- 그림 파일 출력  -->
+					<div class = "mb-3">
+						<c:forEach items ="${board.fileName }" var = "fileName">
+							<div>
+								<!-- http://localhost:8080/image/게시물번호/fileName  -->
+								<!-- aws로 올리면 위 만큼이 aws 주소가 됨   -->
+								<img src="http://localhost:8080/image/${board.id }/${fileName}" alt="" height="300" width="300"/>
+							</div>
+						</c:forEach>
+					</div>
+					
 					<div class="mb-3">
 						<label for="" class="form-label">본문</label>
 						<textarea class="form-control" readonly rows="10">${board.body }</textarea>

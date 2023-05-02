@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Board;
@@ -29,12 +30,13 @@ public class BoardController {
 	@GetMapping({ "/", "list" })
 	public String list(Model model,
 			@RequestParam(value = "page", defaultValue = "1") Integer page,
-			@RequestParam(value = "search", defaultValue = "") String search) {
+			@RequestParam(value = "search", defaultValue = "") String search,
+			@RequestParam(value = "type", required = false) String type) {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
 		// List<Board> list = service.listBoard(); // 페이지 처리 전
-		Map<String, Object> result = service.listBoard(page, search); // 페이지 처리
-		
+		Map<String, Object> result = service.listBoard(page, search, type); // 페이지 처리
+
 		// 3. add attribute
 //		model.addAttribute("boardList", result.get("boardList"));
 //		model.addAttribute("pageInfo", result.get("pageInfo"));
@@ -49,6 +51,7 @@ public class BoardController {
 		// 1. request param
 		// 2. business logic
 		Board board = service.getBoard(id);
+		System.out.println(board);
 		// 3. add attribute
 		model.addAttribute("board", board);
 		// 4. forward/redirect
@@ -68,7 +71,7 @@ public class BoardController {
 		boolean ok = service.modify(board);
 
 		if (ok) {
-			// 해당 게시물 보기로 리디렉션
+			// 해당 게시물 보기로 리디렉션 ==> 다시 일을 해줘야하기 때문에 
 //			rttr.addAttribute("success", "success");
 			rttr.addFlashAttribute("message", board.getId() + "번 게시물이 수정되었습니다.");
 			return "redirect:/id/" + board.getId();
@@ -102,11 +105,14 @@ public class BoardController {
 	}
 
 	@PostMapping("add")
-	public String addProcess(Board board, RedirectAttributes rttr) {
+	public String addProcess(
+			// @requestParam("files") 를 해주는 이유는 input name을 files로 해서 보내주기 때문
+			@RequestParam("files") MultipartFile[] files,
+			Board board, RedirectAttributes rttr) throws Exception {
 		// 새 게시물 db에 추가
 		// 1.
 		// 2.
-		boolean ok = service.addBoard(board);
+		boolean ok = service.addBoard(board, files);
 		// 3.
 		// 4.
 		if (ok) {

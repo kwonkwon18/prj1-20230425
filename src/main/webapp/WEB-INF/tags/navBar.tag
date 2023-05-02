@@ -25,6 +25,13 @@
 
 			<!-- search 폼 -->
 			<form action="/list" class="d-flex" role="search">
+				<select class = "form-select" name="type" id="">
+				<option value="all" >전체</option>
+				<option value="title" ${param.type eq 'title' ? 'selected': '' }  >제목</option>
+				<option value="body" ${param.type eq 'body' ? 'selected': '' }>본문</option>
+				<option value="writer" ${param.type eq 'writer' ? 'selected': '' }>글쓴이</option>
+				</select>
+				
 				<input value = "${param.search }" name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success" type="submit">
 					<i class="fa-solid fa-magnifying-glass"></i>

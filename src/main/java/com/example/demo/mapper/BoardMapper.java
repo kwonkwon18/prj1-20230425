@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -26,10 +27,17 @@ public interface BoardMapper {
 	List<Board> selectAll();
 
 	@Select("""
-			SELECT *
-			FROM Board
-			WHERE id = #{id}
+			select 
+				b.id,
+				b.title,
+				b.body,
+				b.inserted,
+				b.writer,
+				f.fileName
+			from Board b left Join FileName f on b.id = f.boardid
+			where b.id = #{id}
 			""")
+	@ResultMap("boardResultMap")
 	Board selectById(Integer id);
 
 	@Update("""
@@ -65,27 +73,60 @@ public interface BoardMapper {
 				writer,
 				inserted
 			FROM Board
-			WHERE
+			
+				<where>
+				
+				<if test = "(type eq 'all') or (type eq 'title')">
 				title LIKE #{pattern}
-				OR body LIKE #{pattern}
+				</if>
+				
+
+				<if test = "(type eq 'all') or (type eq 'writer')">
 				OR writer LIKE #{pattern}
+				</if>
+				
+				<if test = "(type eq 'all') or (type eq 'body')">
+				OR body LIKE #{pattern}
+				</if>
+				
+				</where> 
+				
 			ORDER BY id DESC
 			LIMIT #{startIndex}, #{rowPerPage}
 			</script>
 			""")
-	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
+	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search, String type);
 
 	@Select("""
 			<script>
 			<bind name="pattern" value="'%' + search + '%'" />
 			SELECT COUNT(*)
 			FROM Board
-			WHERE
+			
+				<where>
+				
+				<if test = "(type eq 'all') or (type eq 'title')">
 				title LIKE #{pattern}
-				OR body LIKE #{pattern}
+				</if>
+				
+
+				<if test = "(type eq 'all') or (type eq 'writer')">
 				OR writer LIKE #{pattern}
+				</if>
+				
+				<if test = "(type eq 'all') or (type eq 'body')">
+				OR body LIKE #{pattern}
+				</if>
+				
+				</where> 
 			</script>
 			""")
-	Integer countAll(String search);
+	Integer countAll(String search, String type);
+
+	@Insert("""
+			insert into FileName (boardId, fileName)
+			values (#{boardId}, #{fileName})
+			""")
+	void insertFileName(Integer boardId, String fileName);
 
 }
