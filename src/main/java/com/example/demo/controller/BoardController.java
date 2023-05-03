@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +67,21 @@ public class BoardController {
 
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
-	public String modifyProcess(Board board, RedirectAttributes rttr) {
-
-		boolean ok = service.modify(board);
+	public String modifyProcess(Board board, RedirectAttributes rttr,
+			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames) {
+//		System.out.println(removeFileNames); 확인용
+		
+		// removeFileNames 로 넘어온 파일명을 찾아서 삭제 해줌
+		
+		
+		// 새로 입력받은 file 폴더를 만들어줌
+		
+		
+		// 변경된 것들을 테이블에 수정해줌
+		
+		boolean ok = service.modify(board, removeFileNames);
+		
+		
 
 		if (ok) {
 			// 해당 게시물 보기로 리디렉션 ==> 다시 일을 해줘야하기 때문에 

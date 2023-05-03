@@ -13,7 +13,7 @@
 <body>
 
 	<my:navBar></my:navBar>
-	
+
 	<my:alert></my:alert>
 
 	<div class="container-lg">
@@ -22,24 +22,36 @@
 			<div class="col-12 col-md-8 col-lg-6">
 
 
-				<h1>${board.id }번 게시물 수정</h1>
+				<h1>${board.id }번게시물 수정</h1>
 				<form method="post">
 					<input type="hidden" name="id" value="${board.id }" />
 					<div class="mb-3">
-						<label for="titleInput" class="form-label">제목</label>
-						<input class="form-control" id="titleInput" type="text" name="title" value="${board.title }" />
+						<label for="titleInput" class="form-label">제목</label> <input class="form-control" id="titleInput" type="text" name="title" value="${board.title }" />
 					</div>
+
+					<!-- 첨부 그림 보이기  -->
+					<div class="mb-3">
+						<c:forEach items="${board.fileName }" var="fileName">
+							<input type="checkbox" name = "removeFiles" value = "${fileName }" />
+							<div class="mb-3">
+								<!-- http://localhost:8080/image/게시물번호/fileName  -->
+								<!-- aws로 올리면 위 만큼이 aws 주소가 됨   -->
+
+								<img class="img-fluid img-thumbnail" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" height="300" width="300" />
+							</div>
+						</c:forEach>
+					</div>
+
+
 					<div class="mb-3">
 						<label for="bodyTextarea" class="form-label">본문</label>
 						<textarea class="form-control" id="bodyTextarea" rows="10" name="body">${board.body }</textarea>
 					</div>
 					<div class="mb-3">
-						<label class="form-label" for="writerInput">작성자</label>
-						<input class="form-control" id="writerInput" type="text" name="writer" value="${board.writer }" />
+						<label class="form-label" for="writerInput">작성자</label> <input class="form-control" id="writerInput" type="text" name="writer" value="${board.writer }" />
 					</div>
 					<div class="mb-3">
-						<label for="" class="form-label">작성일시</label>
-						<input class="form-control" type="text" value="${board.inserted }" readonly />
+						<label for="" class="form-label">작성일시</label> <input class="form-control" type="text" value="${board.inserted }" readonly />
 					</div>
 					<div class="mb-3">
 						<input class="btn btn-secondary" type="submit" value="수정" />

@@ -28,47 +28,82 @@ public class BoardService {
 		return mapper.selectById(id);
 	}
 
-	public boolean modify(Board board) {
+	public boolean modify(Board board, List<String> removeFileNames) {
+		// FileName 테이블 삭제
+		if (removeFileNames != null && !removeFileNames.isEmpty()) {
+			for (String fileName : removeFileNames) {
+				// 하드디스크에서 삭제
+				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
+				File file = new File(path);
+				if (file.exists()) {
+					file.delete();
+				}
+
+				// 테이블에서 삭제
+				mapper.deleteFileNameByBoardIdAndFileName(board.getId(), fileName);
+			}
+		}
+
+		// Board 테이블을 업데이트 해줌
 		int cnt = mapper.update(board);
 
 		return cnt == 1;
 	}
 
 	public boolean remove(Integer id) {
+
+		// 파일명 조회(파일명 알아야 하드디스크 파일 지울 수 있다)
+		List<String> fileNames = mapper.selectFileNamesByBoardId(id);
+
+		System.out.println(fileNames);
+
+		// fileName 테이블의 데이터 지우기
+		mapper.deleteFileNameByBoardId(id);
+
+		// 하드디스크의 파일 지우기
+		for (String fileName : fileNames) {
+			String path = "C:\\study\\upload\\" + id + "\\" + fileName;
+			File file = new File(path);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
+
+		// 게시물 테이블의 데이터 지우기
 		int cnt = mapper.deleteById(id);
 		return cnt == 1;
 	}
 
 	// 트랜잭션해줘야함 ==> 다 되던가 다 안되던가
-	// @Transactional ==> nuchecked는 얘가 잡고 (rollbackFor ) 부분이 checked 를 잡음 
+	// @Transactional ==> nuchecked는 얘가 잡고 (rollbackFor ) 부분이 checked 를 잡음
 	public boolean addBoard(Board board, MultipartFile[] files) throws Exception {
-		// 파일 이름을 생성해줘야하기 때문에 얘가 먼저 와야함 
+		// 파일 이름을 생성해줘야하기 때문에 얘가 먼저 와야함
 		int cnt = mapper.insert(board);
-		
-		
+
 		// 게시물을 입력하고 나서, 프라이머리 키로 그 게시물의 폴더를 만들어줘 저장 할 수 있게 하자
 		// 1. 게시물 번호로 폴더 만들기
 		// 2. 트랜잭션 처리하기
-		
+
 		for (MultipartFile file : files) {
 			if (file.getSize() > 0) {
 				// 파일 저장 (파일 시스템에)
+				// \\ <== 이거 적당하게 잘 넣어줘야한다.
 				String folder = "C:\\study\\upload\\" + board.getId();
 				// 원하는 폴더를 만들 수 있는 객체 만들기
 				File targetFolder = new File(folder);
 				// 폴더가 없다면.. ==> 생성
-				if(!targetFolder.exists()) {
+				if (!targetFolder.exists()) {
 					// 폴더 만들기
 					targetFolder.mkdirs();
 				}
-				// 저장할 경로  ==> 위치\\이름 으로 기술하자
+				// 저장할 경로 ==> 위치\\이름 으로 기술하자
 				String path = "C:\\study\\upload\\" + board.getId() + "\\" + file.getOriginalFilename();
 				// 파일을 만들 수 있는 객체 생성
 				File target = new File(path);
 				// transferTo(file 객체) ==> 파일 만들기
 				file.transferTo(target);
 				// db에 관련 정보 저장(insert)
-				 mapper.insertFileName(board.getId(), file.getOriginalFilename());
+				mapper.insertFileName(board.getId(), file.getOriginalFilename());
 			}
 		}
 

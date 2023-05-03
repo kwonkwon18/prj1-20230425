@@ -26,6 +26,8 @@ public interface BoardMapper {
 			""")
 	List<Board> selectAll();
 
+	// 데이터를 함께 보여줄 때는 두 테이블을 
+	// left join 하여 보여줘야한다. 
 	@Select("""
 			select 
 				b.id,
@@ -51,6 +53,9 @@ public interface BoardMapper {
 			""")
 	int update(Board board);
 
+	// fileName table 의 boardid가 
+	// board 테이블의 id 를 참조하고 있음(외래키) 
+	// 그냥 삭제하면 외래키 조약 사항에 위배된다. 
 	@Delete("""
 			DELETE FROM Board
 			WHERE id = #{id}
@@ -64,15 +69,19 @@ public interface BoardMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
 
+	// count(f.id) 를 해주는 이유는 한 게시물에 여러개의 id를 가지기 때문에 그 게시물을 
+	// 기준으로 left join 할 경우 count(f.id)를 해주면 각 게시글마다 
+	// 들어있는 파일의 갯수를 확인 할 수 있따. 
 	@Select("""
 			<script>
 			<bind name="pattern" value="'%' + search + '%'" />
 			SELECT
-				id,
-				title,
-				writer,
-				inserted
-			FROM Board
+				b.id,
+				b.title,
+				b.writer,
+				b.inserted,
+				count(f.id) fileCount
+			FROM Board b left join FileName f on b.id = f.boardId
 			
 				<where>
 				
@@ -90,8 +99,10 @@ public interface BoardMapper {
 				</if>
 				
 				</where> 
+			
+			group by b.id
 				
-			ORDER BY id DESC
+			ORDER BY b.id DESC
 			LIMIT #{startIndex}, #{rowPerPage}
 			</script>
 			""")
@@ -128,5 +139,27 @@ public interface BoardMapper {
 			values (#{boardId}, #{fileName})
 			""")
 	void insertFileName(Integer boardId, String fileName);
+
+	
+	
+	@Select("""
+			select fileName from FileName
+			where boardId = #{id}
+			""")
+	List<String> selectFileNamesByBoardId(Integer id);
+
+	
+	@Delete("""
+			delete from FileName
+			where boardId = #{id} 
+			""")
+	void deleteFileNameByBoardId(Integer id);
+	
+	
+	@Delete("""
+			delete from FileName
+			where BoardId = #{id} AND fileName = #{fileName}
+			""")
+	void deleteFileNameByBoardIdAndFileName(Integer id, String fileName);
 
 }

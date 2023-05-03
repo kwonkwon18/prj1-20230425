@@ -32,8 +32,10 @@
 					</div>
 
 					<!-- 파일 업로드 input  -->
-					<div>
-						<input type="file" multiple name="files" accept="image/*" />
+
+					<div class="mb-3">
+						<label for="fileInput" class="form-label"></label> 
+						<input type="file" multiple name="files" accept="image/*" id = "fileInput" />
 					</div>
 
 

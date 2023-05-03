@@ -32,8 +32,12 @@
 				<c:forEach items="${boardList }" var="board">
 					<tr>
 						<td>${board.id }</td>
-						<td><a href="/id/${board.id }"> ${board.title } </a></td>
-						<span> 파일 : ${board.fileCount }</span>
+						<td><a href="/id/${board.id }"> ${board.title }</a>
+						
+						<c:if test="${board.fileCount >0 }">
+						<span class="badge text-bg-info"><i class="fa-regular fa-image"></i>${board.fileCount }</span></td>
+						</c:if>
+						
 						<td>${board.writer }</td>
 						<td>${board.inserted }</td>
 					</tr>
