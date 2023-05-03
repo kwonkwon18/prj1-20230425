@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +14,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.domain.Board;
 import com.example.demo.mapper.BoardMapper;
 
+import software.amazon.awssdk.services.s3.S3Client;
+
 // 이 객체를 활용해서 spring bean 을 만들어줘라..
 //@Component
 @Service
 // 보통 하나의 트랜젝션 이므로 붙혀주는게 좋다.
 @Transactional(rollbackFor = Exception.class)
 public class BoardService {
+		
+	@Autowired
+	private S3Client s3;
+	
+	@Value("${aws.s3.bucketName}")
+	private String bucketName;
 
 	@Autowired
 	private BoardMapper mapper;
@@ -28,7 +36,7 @@ public class BoardService {
 		return mapper.selectById(id);
 	}
 
-	public boolean modify(Board board, List<String> removeFileNames) {
+	public boolean modify(Board board, List<String> removeFileNames, MultipartFile[] addFiles) throws Exception {
 		// FileName 테이블 삭제
 		if (removeFileNames != null && !removeFileNames.isEmpty()) {
 			for (String fileName : removeFileNames) {
@@ -41,6 +49,31 @@ public class BoardService {
 
 				// 테이블에서 삭제
 				mapper.deleteFileNameByBoardIdAndFileName(board.getId(), fileName);
+			}
+		}
+
+		// 새 파일 추가
+		for (MultipartFile newFile : addFiles) {
+			if (newFile.getSize() > 0) {
+				// 테이블에 파일명 추가
+				mapper.insertFileName(board.getId(), newFile.getOriginalFilename());
+				
+				
+				String fileName = newFile.getOriginalFilename();
+				String folder = "C:\\study\\upload\\" + board.getId();
+				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
+
+				// 디렉토리 없으면 만들기
+				File dir = new File(folder);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				// 파일을 하드디스크에 저장
+				File file = new File(path);
+				newFile.transferTo(file);
+				
+				
 			}
 		}
 

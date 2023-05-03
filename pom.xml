@@ -38,6 +38,15 @@
 	    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
 	</dependency>
 		<!-- jsp 설정 끝  -->
+		
+		<!-- AWS S3 코드 -->
+		<!-- https://mvnrepository.com/artifact/software.amazon.awssdk/s3 -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.20.57</version>
+		</dependency>
+		<!-- AWS S3 코드 끝-->
 
 		
 		<dependency>

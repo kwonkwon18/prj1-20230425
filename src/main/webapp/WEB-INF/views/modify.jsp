@@ -22,8 +22,8 @@
 			<div class="col-12 col-md-8 col-lg-6">
 
 
-				<h1>${board.id }번게시물 수정</h1>
-				<form method="post">
+				<h1>${board.id }번게시물수정</h1>
+				<form method="post" enctype="multipart/form-data">
 					<input type="hidden" name="id" value="${board.id }" />
 					<div class="mb-3">
 						<label for="titleInput" class="form-label">제목</label> <input class="form-control" id="titleInput" type="text" name="title" value="${board.title }" />
@@ -31,8 +31,15 @@
 
 					<!-- 첨부 그림 보이기  -->
 					<div class="mb-3">
-						<c:forEach items="${board.fileName }" var="fileName">
-							<input type="checkbox" name = "removeFiles" value = "${fileName }" />
+						<c:forEach items="${board.fileName }" var="fileName" varStatus = "status">
+							<%-- <input type="checkbox" name="removeFiles" value="${fileName }" /> --%>
+							
+								<div class="form-check form-switch" >
+									<label class="form-check-label" for="${status.count }removeCheckBox"><i class="fa-regular fa-trash-can"></i></label>
+								  <input class="form-check-input" type="checkbox" name="removeFiles" value="${fileName }" role="switch" id="${status.count }removeCheckBox">
+								</div>
+
+							
 							<div class="mb-3">
 								<!-- http://localhost:8080/image/게시물번호/fileName  -->
 								<!-- aws로 올리면 위 만큼이 aws 주소가 됨   -->
@@ -53,6 +60,12 @@
 					<div class="mb-3">
 						<label for="" class="form-label">작성일시</label> <input class="form-control" type="text" value="${board.inserted }" readonly />
 					</div>
+
+					<!-- 새 그림파일 추가   -->
+					<div class="mb-3">
+						<label for="fileInput" class="form-label"></label> <input type="file" multiple name="files" accept="image/*" id="fileInput" />
+					</div>
+
 					<div class="mb-3">
 						<input class="btn btn-secondary" type="submit" value="수정" />
 					</div>

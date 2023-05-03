@@ -68,7 +68,8 @@ public class BoardController {
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
 	public String modifyProcess(Board board, RedirectAttributes rttr,
-			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames) {
+			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
+			@RequestParam(value = "files", required = false) MultipartFile[] addFiles) throws Exception {
 //		System.out.println(removeFileNames); 확인용
 		
 		// removeFileNames 로 넘어온 파일명을 찾아서 삭제 해줌
@@ -79,7 +80,7 @@ public class BoardController {
 		
 		// 변경된 것들을 테이블에 수정해줌
 		
-		boolean ok = service.modify(board, removeFileNames);
+		boolean ok = service.modify(board, removeFileNames, addFiles);
 		
 		
 
