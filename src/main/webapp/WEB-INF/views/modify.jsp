@@ -43,8 +43,7 @@
 							<div class="mb-3">
 								<!-- http://localhost:8080/image/게시물번호/fileName  -->
 								<!-- aws로 올리면 위 만큼이 aws 주소가 됨   -->
-
-								<img class="img-fluid img-thumbnail" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" height="300" width="300" />
+								<img class="img-fluid img-thumbnail" src="${bucketUrl }/${board.id }/${fileName}" alt="" height="300" width="300"/>
 							</div>
 						</c:forEach>
 					</div>
@@ -65,7 +64,10 @@
 					<div class="mb-3">
 						<label for="fileInput" class="form-label"></label> <input type="file" multiple name="files" accept="image/*" id="fileInput" />
 					</div>
-
+					<div class="form-text">
+						1MB 크기의 파일, 총 10MB 크기만 허용 
+					</div>
+					<br />
 					<div class="mb-3">
 						<input class="btn btn-secondary" type="submit" value="수정" />
 					</div>

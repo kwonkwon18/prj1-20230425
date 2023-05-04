@@ -35,7 +35,6 @@
 							<div>
 								<!-- http://localhost:8080/image/게시물번호/fileName  -->
 								<!-- aws로 올리면 위 만큼이 aws 주소가 됨   -->
-								<c:set var = "bucketUrl" value = "https://bucket0503-qqwweerr11223344.s3.ap-northeast-2.amazonaws.com/board" ></c:set>
 								<img class="img-fluid img-thumbnail" src="${bucketUrl }/${board.id }/${fileName}" alt="" height="300" width="300"/>
 							</div>
 						</c:forEach>

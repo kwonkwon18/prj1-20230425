@@ -18,6 +18,7 @@
 
 	<div class="container-lg">
 		<h1>게시물 목록</h1>
+		<!-- 새로 작성된 코드, 변경된 코드  -->
 		<!-- table.table>thead>tr>th*4^^tbody -->
 		<table class="table">
 			<thead>

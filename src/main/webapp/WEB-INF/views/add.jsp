@@ -34,11 +34,12 @@
 					<!-- 파일 업로드 input  -->
 
 					<div class="mb-3">
-						<label for="fileInput" class="form-label"></label> 
-						<input type="file" multiple name="files" accept="image/*" id = "fileInput" />
+						<label for="fileInput" class="form-label"></label> <input type="file" multiple name="files" accept="image/*" id="fileInput" />
 					</div>
 
+					<div class="form-text">1MB 크기의 파일, 총 10MB 크기만 허용</div>
 
+					<br />
 					<div class="mb-3">
 						<input class="btn btn-primary" type="submit" value="등록" />
 					</div>

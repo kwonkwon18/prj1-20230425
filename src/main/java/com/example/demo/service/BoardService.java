@@ -14,7 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.domain.Board;
 import com.example.demo.mapper.BoardMapper;
 
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 // 이 객체를 활용해서 spring bean 을 만들어줘라..
 //@Component
@@ -22,10 +26,11 @@ import software.amazon.awssdk.services.s3.S3Client;
 // 보통 하나의 트랜젝션 이므로 붙혀주는게 좋다.
 @Transactional(rollbackFor = Exception.class)
 public class BoardService {
-		
+
+	// s3 객체를 통해서 upload (put)과 delete 해주면 된다.
 	@Autowired
 	private S3Client s3;
-	
+
 	@Value("${aws.s3.bucketName}")
 	private String bucketName;
 
@@ -40,12 +45,23 @@ public class BoardService {
 		// FileName 테이블 삭제
 		if (removeFileNames != null && !removeFileNames.isEmpty()) {
 			for (String fileName : removeFileNames) {
-				// 하드디스크에서 삭제
-				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
-				File file = new File(path);
-				if (file.exists()) {
-					file.delete();
-				}
+
+					String objectKey = "board/" + board.getId() + "/" + fileName;
+
+					DeleteObjectRequest dor = DeleteObjectRequest.builder()
+							.bucket(bucketName)
+							.key(objectKey)
+							.build();
+
+					s3.deleteObject(dor);
+				
+				
+				//  로컬 하드디스크에서 삭제
+//				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
+//				File file = new File(path);
+//				if (file.exists()) {
+//					file.delete();
+//				}
 
 				// 테이블에서 삭제
 				mapper.deleteFileNameByBoardIdAndFileName(board.getId(), fileName);
@@ -57,23 +73,38 @@ public class BoardService {
 			if (newFile.getSize() > 0) {
 				// 테이블에 파일명 추가
 				mapper.insertFileName(board.getId(), newFile.getOriginalFilename());
-				
-				
-				String fileName = newFile.getOriginalFilename();
-				String folder = "C:\\study\\upload\\" + board.getId();
-				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
 
-				// 디렉토리 없으면 만들기
-				File dir = new File(folder);
-				if (!dir.exists()) {
-					dir.mkdirs();
-				}
+				// s3에 파일(객체) 업로드 
+				String objectKey = "board/" + board.getId() + "/" + newFile.getOriginalFilename();
 
-				// 파일을 하드디스크에 저장
-				File file = new File(path);
-				newFile.transferTo(file);
+				// s3 첫번째 파라미터
+				PutObjectRequest por = PutObjectRequest.builder()
+						.bucket(bucketName)
+						.key(objectKey)
+						.acl(ObjectCannedACL.PUBLIC_READ)
+						.build();
+
+				// s3 두번째 파라미터
+				RequestBody rb = RequestBody.fromInputStream(newFile.getInputStream(), newFile.getSize());
+
+				s3.putObject(por, rb);
 				
 				
+				// ** 로컬에 저장
+//				String fileName = newFile.getOriginalFilename();
+//				String folder = "C:\\study\\upload\\" + board.getId();
+//				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
+//
+//				// 디렉토리 없으면 만들기
+//				File dir = new File(folder);
+//				if (!dir.exists()) {
+//					dir.mkdirs();
+//				}
+//
+//				// 파일을 하드디스크에 저장
+//				File file = new File(path);
+//				newFile.transferTo(file);
+
 			}
 		}
 
@@ -93,13 +124,24 @@ public class BoardService {
 		// fileName 테이블의 데이터 지우기
 		mapper.deleteFileNameByBoardId(id);
 
-		// 하드디스크의 파일 지우기
+		// 하드디스크의 파일(객체) 지우기
 		for (String fileName : fileNames) {
-			String path = "C:\\study\\upload\\" + id + "\\" + fileName;
-			File file = new File(path);
-			if (file.exists()) {
-				file.delete();
-			}
+
+			String objectKey = "board/" + id + "/" + fileName;
+
+			DeleteObjectRequest dor = DeleteObjectRequest.builder()
+					.bucket(bucketName)
+					.key(objectKey)
+					.build();
+
+			s3.deleteObject(dor);
+
+			// ** 로칼에서 진행
+//			String path = "C:\\study\\upload\\" + id + "\\" + fileName;
+//			File file = new File(path);
+//			if (file.exists()) {
+//				file.delete();
+//			}
 		}
 
 		// 게시물 테이블의 데이터 지우기
@@ -119,22 +161,38 @@ public class BoardService {
 
 		for (MultipartFile file : files) {
 			if (file.getSize() > 0) {
-				// 파일 저장 (파일 시스템에)
-				// \\ <== 이거 적당하게 잘 넣어줘야한다.
-				String folder = "C:\\study\\upload\\" + board.getId();
-				// 원하는 폴더를 만들 수 있는 객체 만들기
-				File targetFolder = new File(folder);
-				// 폴더가 없다면.. ==> 생성
-				if (!targetFolder.exists()) {
-					// 폴더 만들기
-					targetFolder.mkdirs();
-				}
-				// 저장할 경로 ==> 위치\\이름 으로 기술하자
-				String path = "C:\\study\\upload\\" + board.getId() + "\\" + file.getOriginalFilename();
-				// 파일을 만들 수 있는 객체 생성
-				File target = new File(path);
-				// transferTo(file 객체) ==> 파일 만들기
-				file.transferTo(target);
+
+				String objectKey = "board/" + board.getId() + "/" + file.getOriginalFilename();
+
+				// s3 첫번째 파라미터
+				PutObjectRequest por = PutObjectRequest.builder()
+						.bucket(bucketName)
+						.key(objectKey)
+						.acl(ObjectCannedACL.PUBLIC_READ)
+						.build();
+
+				// s3 두번째 파라미터
+				RequestBody rb = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
+
+				s3.putObject(por, rb);
+
+				// ** 로컬에 저장
+//				// 파일 저장 (파일 시스템에)
+//				// \\ <== 이거 적당하게 잘 넣어줘야한다.
+//				String folder = "C:\\study\\upload\\" + board.getId();
+//				// 원하는 폴더를 만들 수 있는 객체 만들기
+//				File targetFolder = new File(folder);
+//				// 폴더가 없다면.. ==> 생성
+//				if (!targetFolder.exists()) {
+//					// 폴더 만들기
+//					targetFolder.mkdirs();
+//				}
+//				// 저장할 경로 ==> 위치\\이름 으로 기술하자
+//				String path = "C:\\study\\upload\\" + board.getId() + "\\" + file.getOriginalFilename();
+//				// 파일을 만들 수 있는 객체 생성
+//				File target = new File(path);
+//				// transferTo(file 객체) ==> 파일 만들기
+//				file.transferTo(target);
 				// db에 관련 정보 저장(insert)
 				mapper.insertFileName(board.getId(), file.getOriginalFilename());
 			}
