@@ -21,6 +21,8 @@
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item"><a class="nav-link ${current eq 'list' ? 'active' : '' }" href="/list">목록</a></li>
 				<li class="nav-item"><a class="nav-link ${current eq 'add' ? 'active' : '' }" href="/add">글쓰기</a></li>
+				<li class="nav-item"><a class="nav-link ${current eq 'signup' ? 'active' : '' }" href="/member/signup">회원가입</a></li>
+				<li class="nav-item"><a class="nav-link ${current eq 'memberList' ? 'active' : '' }" href="/member/list">멤버리스트</a></li>
 			</ul>
 
 			<!-- search 폼 -->

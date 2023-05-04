@@ -14,45 +14,48 @@
 </head>
 <body>
 
-	<my:navBar current="signup"></my:navBar>
-	
+	<my:navBar></my:navBar>
+
+
 	<my:alert></my:alert>
 
-	<div class="container-lg">
 
+	<div class="container-lg">
+		<!-- .row.justify-content-center>.col-12.col-md-8.col-lg-6 -->
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>회원가입</h1>
-				<form method="post">
+				<h1>${member.id }상세정보</h1>
+				<div>
 					<div class="mb-3">
-						<label for="inputId" class=form-label">아이디</label> <input id="inputId" type="text" class="form-control" name="id" value = "${member.id }"/>
+						<label for="" class="form-label">아이디</label> <input type="text" class="form-control" value="${member.id }" readonly />
 					</div>
 					<div class="mb-3">
-						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password" />
+						<label for="" class="form-label">패스워드</label> <input type="text" class="form-control" value="${member.password }" readonly />
 					</div>
 					<div class="mb-3">
-						<label for="inputNickName" class=form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value = "${member.nickName }" />
+						<label for="" class="form-label">닉네임</label> <input type="text" class="form-control" value="${member.nickName }" readonly />
 					</div>
 					<div class="mb-3">
-						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value = "${member.email }"/>
+						<label for="" class="form-label">이메일</label> <input type="email" class="form-control" value="${member.email }" readonly />
 					</div>
 					<div class="mb-3">
-						<input type="submit" class="form-control" value="가입 !!" />
+						<label for="" class="form-label">작성일시</label> <input type="text" readonly class="form-control" value="${member.inserted }" />
 					</div>
-				</form>
+					<div>
+
+						<a class="btn btn-secondary" href="/member/modify/${member.id }">수정</a>
+						<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
-
-
-
-
-
-
-
-
-
+	<div class="d-none">
+		<form action="/member/remove" method="post" id="removeForm">
+			<input type="text" name="id" value="${member.id }" />
+		</form>
+	</div>
 
 
 

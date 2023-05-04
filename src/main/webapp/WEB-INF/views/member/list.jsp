@@ -14,46 +14,38 @@
 </head>
 <body>
 
-	<my:navBar current="signup"></my:navBar>
-	
-	<my:alert></my:alert>
+	<my:navBar current="memberList"></my:navBar>
+
 
 	<div class="container-lg">
+		<h1>회원목록</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>password</th>
+					<th>nickName</th>
+					<th>E-mail</th>
+					<th>가입일시</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${memberList }" var="member">
+					<tr>
 
-		<div class="row justify-content-center">
-			<div class="col-12 col-md-8 col-lg-6">
-				<h1>회원가입</h1>
-				<form method="post">
-					<div class="mb-3">
-						<label for="inputId" class=form-label">아이디</label> <input id="inputId" type="text" class="form-control" name="id" value = "${member.id }"/>
-					</div>
-					<div class="mb-3">
-						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password" />
-					</div>
-					<div class="mb-3">
-						<label for="inputNickName" class=form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value = "${member.nickName }" />
-					</div>
-					<div class="mb-3">
-						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value = "${member.email }"/>
-					</div>
-					<div class="mb-3">
-						<input type="submit" class="form-control" value="가입 !!" />
-					</div>
-				</form>
-			</div>
-		</div>
+						<c:url value="/member/info" var="memberInfoLink">
+							<c:param name="id" value="${member.id }"></c:param>
+						</c:url>
+						<td><a href="${memberInfoLink }">${member.id }</a></td>
+						<td>${member.password }</td>
+						<td>${member.nickName }</td>
+						<td>${member.email }</td>
+						<td>${member.inserted }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
