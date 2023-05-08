@@ -30,18 +30,13 @@ public class MemberService {
 	}
 
 	public Member get(String id) {
-		
+
 		return mapper.selectByMemberId(id);
 	}
 
-	
-
-
-
-
-
-
-	
-	
+	public Integer remove(String id) {
+		int cnt = mapper.deleteById(id);
+		return cnt;
+	}
 
 }

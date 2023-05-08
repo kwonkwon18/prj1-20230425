@@ -15,7 +15,7 @@
 <body>
 
 	<my:navBar current="memberList"></my:navBar>
-
+	<my:alert></my:alert>
 
 	<div class="container-lg">
 		<h1>회원목록</h1>

@@ -43,19 +43,38 @@
 					</div>
 					<div>
 
-						<a class="btn btn-secondary" href="/member/modify/${member.id }">수정</a>
-						<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
+						<a href="">수정</a>
+						<button class="btn btn-danger" type = "button" data-bs-target="#confirmModal" data-bs-toggle="modal">탈퇴</button>
+
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="d-none">
-		<form action="/member/remove" method="post" id="removeForm">
-			<input type="text" name="id" value="${member.id }" />
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">삭제 하시겠습니까?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       			<form action="/member/remove" method="post" id="removeForm">
+			<input type="hidden" name="id" value="${member.id }" />
+			<label for="passwordInput1">암호</label>
+			<input id = "" type="password" name = "password" class = "form-control"  />
 		</form>
-	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" form = "removeForm" class="btn btn-danger">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

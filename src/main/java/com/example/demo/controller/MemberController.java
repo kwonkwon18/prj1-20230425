@@ -63,6 +63,21 @@ public class MemberController {
 		
 	}
 	
+	@PostMapping("remove")
+	public String remove(String id, RedirectAttributes rttr) {
+		int cnt =  service.remove(id);
+		
+		if(cnt == 1) {
+			rttr.addFlashAttribute("message", id + " 삭제 완료");
+			return "redirect:/member/list";
+		} else {
+			rttr.addFlashAttribute("message", id + " 삭제 실패");
+			return "redirect:/member/list";
+		}
+
+		
+	}
+	
 	
 	
 	
