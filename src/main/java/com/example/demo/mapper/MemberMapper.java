@@ -1,11 +1,13 @@
 package com.example.demo.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.domain.Member;
 
@@ -46,5 +48,17 @@ public interface MemberMapper {
 			WHERE id = #{id}
 			""")
 	Integer deleteById(String id);
+
+
+
+	@Update("""
+			update Member
+			SET
+					password = #{password},
+					nickName = #{nickName},
+					email = #{email}
+			where id = #{id}
+			""")
+	int updateMemberById(Member member);
 
 }

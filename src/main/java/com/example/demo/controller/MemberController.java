@@ -74,7 +74,31 @@ public class MemberController {
 			rttr.addFlashAttribute("message", "회원 탈퇴시 문제가 발생되었습니다. ");
 			return "redirect:/member/info?id=" + member.getId();
 		}
+
+	}
+
+	@GetMapping("modify")
+	public void modifyForm(Member member, Model model) {
+
+		model.addAttribute("member", service.get(member.getId()));
+
+	}
+
+	@PostMapping("modify")
+	public String modifyProcess(Member member, RedirectAttributes rttr, String oldPassword) {
+
+		boolean ok = service.modifyMember(member, oldPassword);
 		
+		
+
+		if (ok) {
+			rttr.addFlashAttribute("message", "수정되었습니다. ");
+			return "redirect:/member/info?id=" + member.getId();
+		} else {
+			rttr.addFlashAttribute("message", "수정되지 않았습니다.  ");
+			return "redirect:/member/info?id=" + member.getId();
+		}
+
 	}
 
 }

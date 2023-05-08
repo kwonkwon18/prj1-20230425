@@ -37,7 +37,7 @@
 						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value = "${member.email }"/>
 					</div>
 					<div class="mb-3">
-						<input type="submit" class="form-control" value="가입 !!" />
+					<input class="btn btn-success" type="submit" value="가입">
 					</div>
 				</form>
 			</div>

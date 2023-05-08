@@ -44,4 +44,17 @@ public class MemberService {
 		return cnt == 1;
 
 	}
+
+	public boolean modifyMember(Member member, String oldPassword) {
+
+		Member oldmember = mapper.selectByMemberId(member.getId());
+		int cnt = 0;
+
+		if (oldmember.getPassword().equals(oldPassword)) {
+			mapper.updateMemberById(member);
+			cnt = 1;
+		}
+
+		return cnt == 1;
+	}
 }
