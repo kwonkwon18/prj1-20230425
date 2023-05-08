@@ -42,8 +42,7 @@
 						<label for="" class="form-label">작성일시</label> <input type="text" readonly class="form-control" value="${member.inserted }" />
 					</div>
 					<div>
-
-						<a href="">수정</a>
+						<a class = "btn btn-primary" href="/member/modify?id=${member.id }">수정</a>
 						<button class="btn btn-danger" type = "button" data-bs-target="#confirmModal" data-bs-toggle="modal">탈퇴</button>
 
 

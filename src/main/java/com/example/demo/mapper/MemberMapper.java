@@ -42,9 +42,9 @@ public interface MemberMapper {
 
 
 	@Delete("""
-			delete from Member
-			Where id = #{id}
+			DELETE FROM Member
+			WHERE id = #{id}
 			""")
-	int deleteById(String id);
+	Integer deleteById(String id);
 
 }

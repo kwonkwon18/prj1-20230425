@@ -34,9 +34,14 @@ public class MemberService {
 		return mapper.selectByMemberId(id);
 	}
 
-	public Integer remove(String id) {
-		int cnt = mapper.deleteById(id);
-		return cnt;
-	}
+	public boolean remove(Member member) {
+		Member oldMember = mapper.selectByMemberId(member.getId());
+		int cnt = 0;
+		if (oldMember.getPassword().equals(member.getPassword())) {
+			// 암호가 같으면?
+			cnt = mapper.deleteById(member.getId());
+		}
+		return cnt == 1;
 
+	}
 }

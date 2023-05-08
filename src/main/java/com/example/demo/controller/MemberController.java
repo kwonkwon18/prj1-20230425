@@ -43,53 +43,38 @@ public class MemberController {
 
 		}
 	}
-	
+
 	@GetMapping("list")
 	public void list(Model model) {
-		
+
 		List<Member> list = service.listMember();
-		
+
 		model.addAttribute("memberList", list);
 	}
-	
-	
+
 	// 경로 /member/info?id=kwonkwon
 	@GetMapping("info")
 	public void get(String id, Model model) {
-		
-		 Member member = service.get(id);
-		
-		model.addAttribute("member", member);
-		
-	}
-	
-	@PostMapping("remove")
-	public String remove(String id, RedirectAttributes rttr) {
-		int cnt =  service.remove(id);
-		
-		if(cnt == 1) {
-			rttr.addFlashAttribute("message", id + " 삭제 완료");
-			return "redirect:/member/list";
-		} else {
-			rttr.addFlashAttribute("message", id + " 삭제 실패");
-			return "redirect:/member/list";
-		}
 
+		Member member = service.get(id);
+
+		model.addAttribute("member", member);
+
+	}
+
+	@PostMapping("remove")
+	public String remove(Member member, RedirectAttributes rttr) {
+
+		boolean ok = service.remove(member);
+
+		if (ok) {
+			rttr.addFlashAttribute("message", "회원 탈퇴 되었습니다. ");
+			return "redirect:/list";
+		} else {
+			rttr.addFlashAttribute("message", "회원 탈퇴시 문제가 발생되었습니다. ");
+			return "redirect:/member/info?id=" + member.getId();
+		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
