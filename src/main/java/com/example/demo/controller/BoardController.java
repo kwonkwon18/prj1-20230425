@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +62,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/modify/{id}")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #board.id)")
 	public String modifyForm(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("board", service.getBoard(id));
 		return "modify";
@@ -67,6 +70,8 @@ public class BoardController {
 
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #board.id)")
+	// 수정하려는 게시물 id : board.getId()
 	public String modifyProcess(Board board, RedirectAttributes rttr,
 			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
 			@RequestParam(value = "files", required = false) MultipartFile[] addFiles) throws Exception {
@@ -98,6 +103,7 @@ public class BoardController {
 	}
 
 	@PostMapping("remove")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #id)")
 	public String remove(Integer id, RedirectAttributes rttr) {
 		boolean ok = service.remove(id);
 		if (ok) {
@@ -112,20 +118,24 @@ public class BoardController {
 			return "redirect:/id/" + id;
 		}
 	}
-
+	
+	// 로그인한 사람만 들어갈 수 있게 isAuthenticated()
 	@GetMapping("add")
+	@PreAuthorize("isAuthenticated()")
 	public void addForm() {
 		// 게시물 작성 form (view)로 포워드
 	}
 
 	@PostMapping("add")
+	@PreAuthorize("isAuthenticated()")
 	public String addProcess(
 			// @requestParam("files") 를 해주는 이유는 input name을 files로 해서 보내주기 때문
 			@RequestParam("files") MultipartFile[] files,
-			Board board, RedirectAttributes rttr) throws Exception {
+			Board board, RedirectAttributes rttr, Authentication authentication) throws Exception {
 		// 새 게시물 db에 추가
 		// 1.
 		// 2.
+		board.setWriter(authentication.getName());
 		boolean ok = service.addBoard(board, files);
 		// 3.
 		// 4.

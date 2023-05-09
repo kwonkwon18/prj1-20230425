@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +16,16 @@ public class MemberService {
 
 	@Autowired
 	private MemberMapper mapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public boolean signup(Member member) {
+		
+		// 암호를 새롭게 세팅해 준다.
+		String plain = member.getPassword();
+		member.setPassword(passwordEncoder.encode(plain));
+		
 
 		int cnt = mapper.insert(member);
 
@@ -37,23 +46,46 @@ public class MemberService {
 	public boolean remove(Member member) {
 		Member oldMember = mapper.selectByMemberId(member.getId());
 		int cnt = 0;
-		if (oldMember.getPassword().equals(member.getPassword())) {
-			// 암호가 같으면?
+		
+		// 암호화 이후
+		// // matches(평문, 암호화된 문자) 
+		if(passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
 			cnt = mapper.deleteById(member.getId());
 		}
+		
+		// 암호화 이전
+//		if (oldMember.getPassword().equals(member.getPassword())) {
+//			// 암호가 같으면?
+//			cnt = mapper.deleteById(member.getId());
+//		}
 		return cnt == 1;
 
 	}
 
 	public boolean modifyMember(Member member, String oldPassword) {
-
-		Member oldmember = mapper.selectByMemberId(member.getId());
-		int cnt = 0;
-
-		if (oldmember.getPassword().equals(oldPassword)) {
-			mapper.updateMemberById(member);
-			cnt = 1;
+		
+		// 패스워드를 바꾸기 위해 입력했다면.. 
+		if(!member.getPassword().isBlank()) {
+			String plain = member.getPassword();
+			member.setPassword(passwordEncoder.encode(plain));
 		}
+
+		Member oldMember = mapper.selectByMemberId(member.getId());
+		
+		int cnt = 0;
+		
+		// matches(평문, 암호화된 문자) 
+		if (passwordEncoder.matches(oldPassword, oldMember.getPassword())) {
+			// 기존 암호와 같으면
+			cnt = mapper.updateMemberById(member);
+		} 
+		
+		if(oldMember.getPassword().equals(oldPassword)) {
+			cnt = mapper.updateMemberById(member);
+		}
+		
+		System.out.println(cnt);
+
 
 		return cnt == 1;
 	}

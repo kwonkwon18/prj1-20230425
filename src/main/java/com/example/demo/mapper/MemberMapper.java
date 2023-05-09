@@ -52,13 +52,21 @@ public interface MemberMapper {
 
 
 	@Update("""
-			update Member
-			SET
-					password = #{password},
-					nickName = #{nickName},
-					email = #{email}
-			where id = #{id}
+			<script>
+			
+			UPDATE Member
+			SET 
+				<if test="password neq null and password neq ''">
+				password = #{password},
+				</if>
+				
+			    nickName = #{nickName},
+			    email = #{email}
+			WHERE
+				id = #{id}
+			
+			</script>
 			""")
-	int updateMemberById(Member member);
+	Integer updateMemberById(Member member);
 
 }

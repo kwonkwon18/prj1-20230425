@@ -26,7 +26,8 @@
 						<label class="form-label" for="inputId">아이디</label> <input id="inputId" class="form-control" type="text" name="id" value="${member.id }" readonly />
 					</div>
 					<div class="mb-3">
-						<label class="form-label" for="inputPassword">패스워드</label> <input id="inputPassword" class="form-control" type="text" name="password" value="${member.password }" />
+						<label class="form-label" for="inputPassword">패스워드</label> 
+						<input id="inputPassword" class="form-control" type="text" name="password" value="" />
 					</div>
 					<div class="mb-3">
 						<label class="form-label" for="inputNickName">닉네임</label> <input id="inputNickName" class="form-control" type="text" name="nickName" value="${member.nickName }" />
@@ -49,7 +50,8 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<label for="inputOldPassword" class="form-label">이전 암호</label> <input form="modifyForm" id="inputOldPassword" type="text" class="form-control" name="oldPassword" />
+					<label for="inputOldPassword" class="form-label">이전 암호</label> 
+					<input form="modifyForm" id="inputOldPassword" type="text" class="form-control" name="oldPassword" />
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>

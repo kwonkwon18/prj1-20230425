@@ -13,30 +13,23 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body>
-
-	<my:navBar current="signup"></my:navBar>
-	
+	<my:navBar current="login"></my:navBar>
 	<my:alert></my:alert>
-
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>회원가입</h1>
+				<h1>로 그 인 🐾🐾</h1>
 				<form method="post">
 					<div class="mb-3">
-						<label for="inputId" class=form-label">아이디</label> <input id="inputId" type="text" class="form-control" name="id" value = "${member.id }"/>
+						<label for="" class=form-label">아이디</label> 
+						<input class = "form-control" type="text" name="username" />
 					</div>
 					<div class="mb-3">
-						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password"/>
+						<label for="" class=form-label">패스워드</label> 
+						<input class = "form-control" type="password" name="password" />
 					</div>
 					<div class="mb-3">
-						<label for="inputNickName" class=form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value = "${member.nickName }" />
-					</div>
-					<div class="mb-3">
-						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value = "${member.email }"/>
-					</div>
-					<div class="mb-3">
-					<input class="btn btn-success" type="submit" value="가입">
+						<input class="btn btn-success" type="submit" value="로그인">
 					</div>
 				</form>
 			</div>
@@ -44,6 +37,23 @@
 	</div>
 
 
+
+
+	<!--      <div class="container">
+      <form class="form-signin" method="post" action="/member/login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <p>
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        </p>
+        <p>
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+</div>
+ -->
 
 
 
