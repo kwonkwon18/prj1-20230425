@@ -14,7 +14,7 @@
 </head>
 <body>
 
-	<my:navBar></my:navBar>
+	<my:navBar current="myInfo"></my:navBar>
 
 
 	<my:alert></my:alert>

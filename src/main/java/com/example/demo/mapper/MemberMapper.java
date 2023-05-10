@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -37,8 +38,11 @@ public interface MemberMapper {
 
 
 	@Select("""
-			select * from Member where id = #{id}
+			select * from 
+			Member m left join MemberAuthority ma on m.id = ma.memberId
+			where id = #{id}
 			""")
+	@ResultMap("memberMap")
 	Member selectByMemberId(String id);
 
 

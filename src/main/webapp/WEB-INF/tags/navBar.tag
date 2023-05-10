@@ -27,8 +27,11 @@
 				<sec:authorize access="isAnonymous()">
 					<li class="nav-item"><a class="nav-link ${current eq 'signup' ? 'active' : '' }" href="/member/signup">회원가입</a></li>
 				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
+				<sec:authorize access="hasAuthority('admin')">
 					<li class="nav-item"><a class="nav-link ${current eq 'memberList' ? 'active' : '' }" href="/member/list">멤버리스트</a></li>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
+					<li class="nav-item"><a class="nav-link ${current eq 'myInfo' ? 'active' : '' }" href="/member/info?id=<sec:authentication property="name"/>">내 정보</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAnonymous()">
 					<li class="nav-item"><a class="nav-link ${current eq 'login' ? 'active' : '' }" href="/member/login">로그인</a></li>
@@ -54,7 +57,7 @@
 		</div>
 	</div>
 </nav>
-
+					
 <!-- 로그인 했으면 로그인한 회원 정보를 뜨게 해줌   -->
 <div>
 	<sec:authentication property="principal" />
