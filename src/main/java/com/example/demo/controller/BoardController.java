@@ -133,8 +133,8 @@ public class BoardController {
 			@RequestParam("files") MultipartFile[] files,
 			Board board, RedirectAttributes rttr, Authentication authentication) throws Exception {
 		// 새 게시물 db에 추가
-		// 1.
-		// 2.
+
+		// 로그인 된 사람의 이름이 들어가게 함 
 		board.setWriter(authentication.getName());
 		boolean ok = service.addBoard(board, files);
 		// 3.

@@ -61,7 +61,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       			<form action="/member/remove" method="post" id="removeForm">
+       	<form action="/member/remove" method="post" id="removeForm">
 			<input type="hidden" name="id" value="${member.id }" />
 			<label for="passwordInput1">암호</label>
 			<input id = "" type="password" name = "password" class = "form-control"  />

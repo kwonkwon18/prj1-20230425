@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.domain.Member;
 import com.example.demo.service.MemberService;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -64,7 +65,7 @@ public class MemberController {
 
 	// 경로 /member/info?id=kwonkwon
 	@GetMapping("info")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and authentication.name eq #id")
 	public void get(String id, Model model) {
 
 		Member member = service.get(id);
@@ -74,13 +75,17 @@ public class MemberController {
 	}
 
 	@PostMapping("remove")
-	@PreAuthorize("isAuthenticated()")
-	public String remove(Member member, RedirectAttributes rttr) {
+	@PreAuthorize("isAuthenticated() and authentication.name eq #member.id")
+	public String remove(Member member, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
 
 		boolean ok = service.remove(member);
 
 		if (ok) {
 			rttr.addFlashAttribute("message", "회원 탈퇴 되었습니다. ");
+			
+			//  로그아웃도 해줘야함 
+			request.logout();
+			
 			return "redirect:/list";
 		} else {
 			rttr.addFlashAttribute("message", "회원 탈퇴시 문제가 발생되었습니다. ");
@@ -90,7 +95,7 @@ public class MemberController {
 	}
 
 	@GetMapping("modify")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated() and authentication.name eq #member.id")
 	public void modifyForm(Member member, Model model) {
 
 		model.addAttribute("member", service.get(member.getId()));
@@ -98,13 +103,15 @@ public class MemberController {
 	}
 
 	@PostMapping("modify")
-	@PreAuthorize("isAuthenticated()")
-	public String modifyProcess(Member member, RedirectAttributes rttr, String oldPassword) {
+	@PreAuthorize("isAuthenticated() and authentication.name eq #member.id")
+	public String modifyProcess(Member member, RedirectAttributes rttr, String oldPassword) throws Exception {
 
 		boolean ok = service.modifyMember(member, oldPassword);
 
 		if (ok) {
 			rttr.addFlashAttribute("message", "수정되었습니다. ");
+			
+			
 			return "redirect:/member/info?id=" + member.getId();
 		} else {
 			rttr.addFlashAttribute("message", "수정되지 않았습니다.  ");

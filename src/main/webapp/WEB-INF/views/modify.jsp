@@ -62,7 +62,9 @@
 
 					<!-- 새 그림파일 추가   -->
 					<div class="mb-3">
-						<label for="fileInput" class="form-label"></label> <input type="file" multiple name="files" accept="image/*" id="fileInput" />
+						<label for="fileInput" class="form-label">
+						</label> 
+						<input type="file" multiple name="files" accept="image/*" id="fileInput" />
 					</div>
 					<div class="form-text">
 						1MB 크기의 파일, 총 10MB 크기만 허용 
