@@ -65,7 +65,8 @@ public class MemberController {
 
 	// 경로 /member/info?id=kwonkwon
 	@GetMapping("info")
-	@PreAuthorize("isAuthenticated() and authentication.name eq #id")
+
+	@PreAuthorize("(isAuthenticated() and (authentication.name eq #id)) or hasAuthority('admin')")
 	public void get(String id, Model model) {
 
 		Member member = service.get(id);
@@ -95,7 +96,7 @@ public class MemberController {
 	}
 
 	@GetMapping("modify")
-	@PreAuthorize("isAuthenticated() and authentication.name eq #member.id")
+	@PreAuthorize("hasAuthority('admin') or (isAuthenticated() and authentication.name eq #member.id)")
 	public void modifyForm(Member member, Model model) {
 
 		model.addAttribute("member", service.get(member.getId()));
@@ -103,7 +104,7 @@ public class MemberController {
 	}
 
 	@PostMapping("modify")
-	@PreAuthorize("isAuthenticated() and authentication.name eq #member.id")
+	@PreAuthorize("hasAuthority('admin') or (isAuthenticated() and authentication.name eq #member.id)")
 	public String modifyProcess(Member member, RedirectAttributes rttr, String oldPassword) throws Exception {
 
 		boolean ok = service.modifyMember(member, oldPassword);

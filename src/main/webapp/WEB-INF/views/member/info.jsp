@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix ="sec" uri="http://www.springframework.org/security/tags"  %>
 
 <!DOCTYPE html>
 <html>
@@ -41,17 +42,20 @@
 					<div class="mb-3">
 						<label for="" class="form-label">작성일시</label> <input type="text" readonly class="form-control" value="${member.inserted }" />
 					</div>
+					
+					<sec:authorize access="authentication.name eq #member.id">
 					<div>
 						<a class = "btn btn-primary" href="/member/modify?id=${member.id }">수정</a>
 						<button class="btn btn-danger" type = "button" data-bs-target="#confirmModal" data-bs-toggle="modal">탈퇴</button>
-
-
 					</div>
+					</sec:authorize>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 
+<sec:authorize access="authentication.name eq #member.id" >
 <!-- Modal -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -74,6 +78,7 @@
     </div>
   </div>
 </div>
+</sec:authorize>
 
 
 
