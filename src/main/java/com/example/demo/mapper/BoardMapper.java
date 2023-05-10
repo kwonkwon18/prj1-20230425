@@ -79,9 +79,12 @@ public interface BoardMapper {
 				b.title,
 				b.writer,
 				b.inserted,
-				count(f.id) fileCount
-			FROM Board b left join FileName f on b.id = f.boardId
-			
+				count(f.id) fileCount,
+				m.nickName
+			FROM Board b 
+				left join FileName f on b.id = f.boardId
+				left join Member m on b.writer = m.id
+				
 				<where>
 				
 				<if test = "(type eq 'all') or (type eq 'title')">

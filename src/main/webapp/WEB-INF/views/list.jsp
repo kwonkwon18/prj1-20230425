@@ -39,7 +39,7 @@
 						<span class="badge text-bg-info"><i class="fa-regular fa-image"></i>${board.fileCount }</span></td>
 						</c:if>
 						
-						<td>${board.writer }</td>
+						<td>${board.nickName }</td>
 						<td>${board.inserted }</td>
 					</tr>
 				</c:forEach>
