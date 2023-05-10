@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Board;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.MemberService;
 
 @Controller
 @RequestMapping("/")
@@ -25,6 +26,7 @@ public class BoardController {
 
 	@Autowired
 	private BoardService service;
+	
 
 	// 경로 : http://localhost:8080?page=3
 	// 경로 : http://localhost:8080/list?page=5
@@ -62,7 +64,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/modify/{id}")
-	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #board.id)")
+	@PreAuthorize("isAuthenticated() and @customSecurityChecker.checkBoardWriter(authentication, #id)")
 	public String modifyForm(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("board", service.getBoard(id));
 		return "modify";

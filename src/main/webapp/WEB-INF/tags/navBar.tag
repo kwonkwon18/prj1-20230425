@@ -59,9 +59,9 @@
 </nav>
 					
 <!-- 로그인 했으면 로그인한 회원 정보를 뜨게 해줌   -->
-<div>
+<%-- <div>
 	<sec:authentication property="principal" />
-</div>
+</div> --%>
 
 
 

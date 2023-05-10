@@ -15,7 +15,7 @@
 <body>
 
 	<my:navBar current="signup"></my:navBar>
-	
+
 	<my:alert></my:alert>
 
 	<div class="container-lg">
@@ -24,19 +24,29 @@
 				<h1>회원가입</h1>
 				<form method="post">
 					<div class="mb-3">
-						<label for="inputId" class=form-label">아이디</label> <input id="inputId" type="text" class="form-control" name="id" value = "${member.id }"/>
+						<label for="inputId" class=form-label">아이디</label> <input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
+					</div>
+
+					<div class="mb-3">
+						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password" />
+					</div>
+
+					<div class="mb-3">
+						<label for="inputPasswordCheck" class=form-label">패스워드 확인</label> <input id="inputPasswordCheck" type="password" class="form-control" />
+					</div>
+
+					<div id="passwordSuccessText" class="form-text text-primary d-none">패스워드가 일치합니다.</div>
+
+					<div id="passwordFailText" class="form-text text-danger">패스워드가 일치하지 않습니다.</div>
+
+					<div class="mb-3">
+						<label for="inputNickName" class=form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
 					</div>
 					<div class="mb-3">
-						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password"/>
+						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
 					</div>
 					<div class="mb-3">
-						<label for="inputNickName" class=form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value = "${member.nickName }" />
-					</div>
-					<div class="mb-3">
-						<label for="inputEmail" class=form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value = "${member.email }"/>
-					</div>
-					<div class="mb-3">
-					<input class="btn btn-success" type="submit" value="가입">
+						<input id="signupSubmit" class="btn btn-success disabled" type="submit" value="가입">
 					</div>
 				</form>
 			</div>
@@ -51,7 +61,42 @@
 
 
 
+	<script>
+		console.log("hello js");
 
+		// 패스워드, 패스워드 체크에 키업 이벤트 발생하면
+		$("#inputPassword, #inputPasswordCheck").keyup(function() {
+			// 패스워드에 입력한 값
+			const pw1 = $("#inputPassword").val();
+			// 패스워드 체크에 입력한 값
+			const pw2 = $("#inputPasswordCheck").val();
+
+			if (pw1 === pw2) {
+				// 같으면
+				// submit 버튼 활성화
+				$("#signupSubmit").removeClass("disabled");
+				// 패스워드가 같다는 메세지 출력
+				$("#passwordSuccessText").removeClass("d-none");
+				$("#passwordFailText").addClass("d-none");
+
+			} else {
+				// 그렇지 않으면
+				// submit 버튼 비활성화
+				$("#signupSubmit").addClass("disabled");
+				// 패스워드가 다르다는 메세지 출력
+				$("#passwordFailText").removeClass("d-none");
+				$("#passwordSuccessText").addClass("d-none");
+			}
+		})
+		// 패스워드에 입력한 값
+		// 패스워드 확인에 입력한 값이
+		// 같으면 submit 활성화
+		// 패스워드가 같다는 메세지 출력 
+
+		// 그렇지 않으면
+		// submit 버튼 비활성화
+		// 패스워드가 다르다는 메시지가 출력
+	</script>
 
 
 
