@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Like;
 
 @Mapper
 public interface BoardMapper {
@@ -170,5 +171,8 @@ public interface BoardMapper {
 			select id from Board where writer = #{writer}
 			""")
 	List<Integer> selectIdByWriter(String writer);
+
+	
+
 
 }

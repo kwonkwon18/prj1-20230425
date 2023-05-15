@@ -7,11 +7,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Like;
+import com.example.demo.mapper.BoardLikeMapper;
 import com.example.demo.mapper.BoardMapper;
 
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -37,6 +40,9 @@ public class BoardService {
 	@Autowired
 	private BoardMapper mapper;
 
+	@Autowired
+	private BoardLikeMapper likeMapper;
+
 	public Board getBoard(Integer id) {
 		return mapper.selectById(id);
 	}
@@ -46,17 +52,16 @@ public class BoardService {
 		if (removeFileNames != null && !removeFileNames.isEmpty()) {
 			for (String fileName : removeFileNames) {
 
-					String objectKey = "board/" + board.getId() + "/" + fileName;
+				String objectKey = "board/" + board.getId() + "/" + fileName;
 
-					DeleteObjectRequest dor = DeleteObjectRequest.builder()
-							.bucket(bucketName)
-							.key(objectKey)
-							.build();
+				DeleteObjectRequest dor = DeleteObjectRequest.builder()
+						.bucket(bucketName)
+						.key(objectKey)
+						.build();
 
-					s3.deleteObject(dor);
-				
-				
-				//  로컬 하드디스크에서 삭제
+				s3.deleteObject(dor);
+
+				// 로컬 하드디스크에서 삭제
 //				String path = "C:\\study\\upload\\" + board.getId() + "\\" + fileName;
 //				File file = new File(path);
 //				if (file.exists()) {
@@ -74,7 +79,7 @@ public class BoardService {
 				// 테이블에 파일명 추가
 				mapper.insertFileName(board.getId(), newFile.getOriginalFilename());
 
-				// s3에 파일(객체) 업로드 
+				// s3에 파일(객체) 업로드
 				String objectKey = "board/" + board.getId() + "/" + newFile.getOriginalFilename();
 
 				// s3 첫번째 파라미터
@@ -88,8 +93,7 @@ public class BoardService {
 				RequestBody rb = RequestBody.fromInputStream(newFile.getInputStream(), newFile.getSize());
 
 				s3.putObject(por, rb);
-				
-				
+
 				// ** 로컬에 저장
 //				String fileName = newFile.getOriginalFilename();
 //				String folder = "C:\\study\\upload\\" + board.getId();
@@ -240,16 +244,32 @@ public class BoardService {
 				"boardList", list);
 	}
 
-	
-	
-	
 	public void removeByWriter(String writer) {
-		
+
 		List<Integer> boardIdList = mapper.selectIdByWriter(writer);
-		
-		for(Integer id : boardIdList) {
+
+		for (Integer id : boardIdList) {
 			remove(id);
 		}
+
+	}
+
+	public Map<String, Object> like(Like like, Authentication auth) {
 		
+		Map<String, Object> result = new HashMap<>();
+
+		result.put("like", false);
+		
+		like.setMemberId(auth.getName());
+
+		Integer deleteCnt = likeMapper.delete(like);
+
+		if (deleteCnt != 1) {
+			Integer insertCnt = likeMapper.insert(like);
+			result.put("like", true);
+		}
+
+
+		return result;
 	}
 }

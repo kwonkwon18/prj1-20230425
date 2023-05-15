@@ -140,14 +140,16 @@ public class MemberController {
 	
 	@GetMapping("checkNickName/{nickName}")
 	@ResponseBody
-	public Map<String, Object> checkNickName(@PathVariable("nickName") String nickName){
-		return service.nickName(nickName);
+	public Map<String, Object> checkNickName(@PathVariable("nickName") String nickName, 
+			Authentication authentication){
+		return service.nickName(nickName, authentication);
 	}
 	
 	@GetMapping("checkEmail/{email}")
 	@ResponseBody
-	public Map<String, Object> checkEmail(@PathVariable("email") String email){
-		return service.checkEmail(email);
+	public Map<String, Object> checkEmail(@PathVariable("email") String email,
+			Authentication authentication){
+		return service.checkEmail(email, authentication);
 	}
 	
 	
