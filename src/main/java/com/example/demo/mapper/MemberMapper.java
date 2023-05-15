@@ -73,4 +73,18 @@ public interface MemberMapper {
 			""")
 	Integer updateMemberById(Member member);
 
+
+	@Select("""
+			select * from Member
+			where nickName = #{nickName}
+			""")
+	Member selectByMemberNickName(String nickName);
+
+
+	@Select("""
+			select * from Member
+			where email = #{email}
+			""")
+	Member selectByMemberEmail(String email);
+
 }

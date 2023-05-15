@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -99,5 +100,27 @@ public class MemberService {
 
 
 		return cnt == 1;
+	}
+
+	public Map<String, Object> checkId(String id) {
+		
+		Member member = mapper.selectByMemberId(id);
+		
+		// null 일 때 트루를 반환한다. ==> 없어야 들어가는 것이기 때문에  
+		return Map.of("available", member == null);
+	}
+
+	public Map<String, Object> nickName(String nickName) {
+		
+		Member member = mapper.selectByMemberNickName(nickName);
+		
+		return Map.of("available", member == null);
+	}
+
+	public Map<String, Object> checkEmail(String email) {
+		
+		Member member = mapper.selectByMemberEmail(email);
+		
+		return Map.of("available" , member == null);
 	}
 }
