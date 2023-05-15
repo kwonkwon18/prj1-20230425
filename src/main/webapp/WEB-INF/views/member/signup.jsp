@@ -32,7 +32,8 @@
 
 
 					<div class="mb-3">
-						<label for="inputPassword" class=form-label">패스워드</label> <input id="inputPassword" type="password" class="form-control" name="password" />
+						<label for="inputPassword" class=form-label">패스워드</label> 
+						<input id="inputPassword" type="password" class="form-control" name="password" />
 					</div>
 
 					<div class="mb-3">

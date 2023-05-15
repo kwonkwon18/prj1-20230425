@@ -11,6 +11,41 @@ function enableSubmit(){
 	}
 }
 
+// input 아이디에 키보드입력 발생 시 
+$("#inputId").keyup(function(){
+	// 아이디 중복 확인 다시
+	checkId = false;
+	$("#availableIdMessage").addClass("d-none");
+	$("#notAvailableIdMessage").addClass("d-none");
+	
+	// submit 버튼 활성화
+	enableSubmit();
+	
+})
+
+$("#inputNickName").keyup(function(){
+	// 아이디 중복 확인 다시
+	checkNickName = false;
+	$("#nickNameOk").addClass("d-none");
+	$("#nickNameBad").addClass("d-none");
+	
+	// submit 버튼 활성화
+	enableSubmit();
+	
+})
+
+$("#inputEmail").keyup(function(){
+	// 아이디 중복 확인 다시
+	checkEmail = false;
+	$("#availableEmail").addClass("d-none");
+	$("#notavailableEmail").addClass("d-none");
+	
+	// submit 버튼 활성화
+	enableSubmit();
+	
+})
+
+
 
 
 $("#inputPassword, #inputPasswordCheck").keyup(function() {
@@ -43,7 +78,7 @@ $("#inputPassword, #inputPasswordCheck").keyup(function() {
 })
 
 
-// 결과적으로 아래 ajax로 들어가는 jsoㅜ은 "available"을 key로 갖는 
+// 결과적으로 아래 ajax로 들어가는 json은 "available"을 key로 갖는 
 // Map 의 한쌍이다. 
 $("#checkIdBtn").click(function() {
 
@@ -69,7 +104,8 @@ $("#checkIdBtn").click(function() {
 				checkId = false;
 			}
 
-		}
+		},
+		complete: enableSubmit
 
 	})
 });
@@ -91,7 +127,8 @@ $("#nickNameBtn").click(function() {
 			}
 
 
-		}
+		},
+		complete: enableSubmit
 	})
 
 });
@@ -115,7 +152,8 @@ $("#checkEmailBtn").click(function() {
 
 			}
 		},
-		complete : enableSubmit
+		 complete: enableSubmit
+		
 	})
 }
 
