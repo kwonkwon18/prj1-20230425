@@ -43,8 +43,17 @@ public class BoardService {
 	@Autowired
 	private BoardLikeMapper likeMapper;
 
-	public Board getBoard(Integer id) {
-		return mapper.selectById(id);
+	public Board getBoard(Integer id, Authentication auth) {
+		Board board = mapper.selectById(id);
+		// 현재 로그인한 사람이 이 게시물에 좋아요을 했는지?
+		if (auth != null) {
+			Like like = likeMapper.select(id, auth.getName());
+			if (like != null) {
+				board.setLiked(true);
+			}
+		}
+
+		return board;
 	}
 
 	public boolean modify(Board board, List<String> removeFileNames, MultipartFile[] addFiles) throws Exception {
@@ -255,11 +264,11 @@ public class BoardService {
 	}
 
 	public Map<String, Object> like(Like like, Authentication auth) {
-		
+
 		Map<String, Object> result = new HashMap<>();
 
 		result.put("like", false);
-		
+
 		like.setMemberId(auth.getName());
 
 		Integer deleteCnt = likeMapper.delete(like);
@@ -269,7 +278,15 @@ public class BoardService {
 			result.put("like", true);
 		}
 
+		// 좋아요 갯수 넘겨주기
+		Integer count = likeMapper.countByBoardId(like.getBoardId());
+		result.put("count", count);
 
 		return result;
+	}
+
+	public Object getBoard(Integer id) {
+
+		return getBoard(id, null);
 	}
 }

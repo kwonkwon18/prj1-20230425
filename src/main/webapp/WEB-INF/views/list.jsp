@@ -34,7 +34,7 @@
 				<c:forEach items="${boardList }" var="board">
 					<tr>
 						<td>${board.id }</td>
-						<td></td>
+						<td>${board.likeCount }</td>
 						<td><a href="/id/${board.id }"> ${board.title }</a>
 						
 						<!-- 첨부파일 표시  -->

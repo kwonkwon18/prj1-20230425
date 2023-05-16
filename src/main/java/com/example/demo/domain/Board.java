@@ -18,4 +18,5 @@ public class Board {
 	private Integer fileCount;
 	private String nickName;
 	private Integer likeCount;
+	private boolean liked;
 }

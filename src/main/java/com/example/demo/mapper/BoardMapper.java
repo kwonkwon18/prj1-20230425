@@ -29,6 +29,8 @@ public interface BoardMapper {
 
 	// 데이터를 함께 보여줄 때는 두 테이블을 
 	// left join 하여 보여줘야한다. 
+	// 서브 쿼리문을 사용해준 이유는, 여러개의 파일이 들어갔을 경우, 유일성을 만족시켜주기 위햇
+	// 정보 갯수만큼의 row를 만들어줘야하기 때문이다. 
 	@Select("""
 			select
 				b.id,
@@ -84,10 +86,13 @@ public interface BoardMapper {
 				b.writer,
 				b.inserted,
 				count(f.id) fileCount,
-				m.nickName
+				m.nickName,
+				(select Count(*)
+                From BoardLike where boardId = b.id) likeCount
 			FROM Board b 
 				left join FileName f on b.id = f.boardId
 				left join Member m on b.writer = m.id
+				left Join BoardLike bl on b.id = bl.boardId
 				
 				<where>
 				
