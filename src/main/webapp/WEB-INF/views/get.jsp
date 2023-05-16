@@ -34,29 +34,28 @@
 		<!-- .row.justify-content-center>.col-12.col-md-8.col-lg-6 -->
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>
-					<span id="boardIdText"> ${board.id } </span> 번게시물
-				</h1>
+				<div class = "d-flex">
+					<div class="me-auto">
+						<h1>
+							<span id="boardIdText"> ${board.id } </span> 번게시물
+						</h1>
+					</div>
 
-				<div>
+					<div>
 
-					<h1>
-					
-						<span id="likeIcon"> 
-							
-							<c:if test="${board.liked }">
-								<i class="fa-solid fa-heart"></i>
-							</c:if> 
-							
-							<c:if test="${not board.liked }">
-								<i class="fa-regular fa-heart"></i>
-							</c:if>
+						<h1>
 
-						</span> <span id="likeNumber"> ${board.likeCount } </span>
-						
-					</h1>
+							<span id="likeIcon"> <c:if test="${board.liked }">
+									<i class="fa-solid fa-heart"></i>
+								</c:if> <c:if test="${not board.liked }">
+									<i class="fa-regular fa-heart"></i>
+								</c:if>
+
+							</span> <span id="likeNumber"> ${board.likeCount } </span>
+
+						</h1>
+					</div>
 				</div>
-
 
 
 

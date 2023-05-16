@@ -264,7 +264,6 @@ public class BoardService {
 		for (Integer id : boardIdList) {
 			remove(id);
 		}
-
 	}
 
 	public Map<String, Object> like(Like like, Authentication auth) {
