@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Member;
+import com.example.demo.mapper.BoardLikeMapper;
 import com.example.demo.mapper.MemberMapper;
 
 @Service
@@ -25,6 +26,9 @@ public class MemberService {
 	// 패스워드 인코더를 주입해준다.
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private BoardLikeMapper likeMapper;
 
 	public boolean signup(Member member) {
 
@@ -63,6 +67,9 @@ public class MemberService {
 			// 회원테이블 삭제
 			cnt = mapper.deleteById(member.getId());
 		}
+		
+		// 이 회원이 좋아요 한 레코드 삭제
+		likeMapper.deleteByMemberId(member.getId());
 
 		// 암호화 이전
 //		if (oldMember.getPassword().equals(member.getPassword())) {

@@ -128,6 +128,9 @@ public class BoardService {
 	}
 
 	public boolean remove(Integer id) {
+		
+		// 좋아요 테이블 지우기 ==> 이건 위에 들어가야한다. 아래 들어가면 참조키를 위반하게 됨 즉 이거먼저 지워줘야한다는 뜻 
+		likeMapper.deleteByBoardId(id);
 
 		// 파일명 조회(파일명 알아야 하드디스크 파일 지울 수 있다)
 		List<String> fileNames = mapper.selectFileNamesByBoardId(id);
@@ -136,6 +139,7 @@ public class BoardService {
 
 		// fileName 테이블의 데이터 지우기
 		mapper.deleteFileNameByBoardId(id);
+
 
 		// 하드디스크의 파일(객체) 지우기
 		for (String fileName : fileNames) {

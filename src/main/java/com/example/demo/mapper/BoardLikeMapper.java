@@ -34,10 +34,24 @@ public interface BoardLikeMapper {
 	
 	@Select("""
 			select *
-			from BoardLike
+			from Boa rdLike
 			where boardId = #{boardId}
 			and memberId = #{memberId}
 			""")
 	Like select(Integer boardId, String memberId);
+
+
+	@Delete("""
+			delete from BoardLike
+			where boardId = #{boardId}
+			""")
+	void deleteByBoardId(Integer boardId);
+
+
+	@Delete("""
+			delete from BoardLike
+			where memberId = #{memberId}
+			""")
+	void deleteByMemberId(String memberId);
 	
 }
