@@ -30,14 +30,17 @@ public interface BoardMapper {
 	// 데이터를 함께 보여줄 때는 두 테이블을 
 	// left join 하여 보여줘야한다. 
 	@Select("""
-			select 
+			select
 				b.id,
 				b.title,
 				b.body,
 				b.inserted,
 				b.writer,
-				f.fileName
+				f.fileName,
+                (select Count(*)
+                From BoardLike where boardId = b.id) likeCount
 			from Board b left Join FileName f on b.id = f.boardid
+						left Join BoardLike bl on b.id = bl.boardId
 			where b.id = #{id}
 			""")
 	@ResultMap("boardResultMap")

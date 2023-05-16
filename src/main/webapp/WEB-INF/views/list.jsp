@@ -24,6 +24,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th><i class="fa-solid fa-heart"></i></th>
 					<th>제목</th>
 					<th>작성자</th>
 					<th>작성일시</th>
@@ -33,12 +34,14 @@
 				<c:forEach items="${boardList }" var="board">
 					<tr>
 						<td>${board.id }</td>
+						<td></td>
 						<td><a href="/id/${board.id }"> ${board.title }</a>
 						
+						<!-- 첨부파일 표시  -->
 						<c:if test="${board.fileCount >0 }">
 						<span class="badge text-bg-info"><i class="fa-regular fa-image"></i>${board.fileCount }</span></td>
 						</c:if>
-						
+
 						<td>${board.nickName }</td>
 						<td>${board.inserted }</td>
 					</tr>

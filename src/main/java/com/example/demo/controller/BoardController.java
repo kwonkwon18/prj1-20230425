@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -155,12 +156,23 @@ public class BoardController {
 	}
 	
 	@PostMapping("/like")
-	@ResponseBody
-	public Map<String, Object> like(@RequestBody Like like,
+	public ResponseEntity<Map<String, Object>> like(@RequestBody Like like,
 			Authentication auth) {
 		System.out.println(like);
+		System.out.println(auth);
 		
-		return service.like(like,auth);
+		if(auth == null) {
+		
+			return ResponseEntity
+					.status(403)
+					.body(Map.of("message", "로그인 후 좋아요 클릭 해주세요"));
+			
+		} else {
+			
+			return ResponseEntity.ok().body(service.like(like,auth));
+		}
+		
+		
 	}
 	
 	

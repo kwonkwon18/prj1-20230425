@@ -17,6 +17,17 @@
 	<my:navBar></my:navBar>
 
 	<my:alert></my:alert>
+	
+	<!-- toast  -->
+				<div class="toast-container top-0 start-50 translate-middle-x">
+				<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="toast-header">
+							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+					</div>
+					<div class="toast-body">
+					</div>
+				</div>
+			</div>
 
 
 	<div class="container-lg">
@@ -37,7 +48,7 @@
 						<i class="fa-regular fa-heart"></i>
 					</span>
 					<span id="likeNumber">
-						<%-- ${board.like } --%>
+						${board.likeCount }
 					</span>
 					</h1>
 				</div>

@@ -1,3 +1,5 @@
+const toast = new bootstrap.Toast(document.querySelector("#liveToast"));
+
 $("#likeIcon").click(function() {
 	// 게시물 번호 request body에 추가
 	const boardId = $("#boardIdText").text().trim();
@@ -22,6 +24,26 @@ $("#likeIcon").click(function() {
 				// 빈 하트
 				$("#likeIcon").html(`<i class="fa-regular fa-heart"></i>`);
 			}
+
+		},
+
+		error: function(jqXHR) {
+
+			/*console.log(jqXHR)
+			console.log(jqXHR.responseJSON)*/
+			/* 페이지 상단에 로그가 뜬다. */
+			$("body").prepend(jqXHR.responseJSON.message);
+
+			
+			
+			$(".toast-body").text(jqXHR.responseJSON.message);
+			toast.show();
+			
+			
+			
+			
+			
+			
 
 		}
 
