@@ -34,7 +34,7 @@
 		<!-- .row.justify-content-center>.col-12.col-md-8.col-lg-6 -->
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<div class = "d-flex">
+				<div class="d-flex">
 					<div class="me-auto">
 						<h1>
 							<span id="boardIdText"> ${board.id } </span> 번게시물
@@ -95,6 +95,25 @@
 							</div>
 						</c:if>
 					</sec:authorize>
+
+
+					<div id="commentContainer">
+						<div>댓글 입력창 : 전송</div>
+						<div>댓글1 내용 : 누가 : 언제</div>
+						<div>댓글2 내용 : 누가 : 언제</div>
+						<div>댓글3 내용 : 누가 : 언제</div>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
 				</div>
 			</div>
 		</div>
@@ -131,5 +150,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script src="/js/board/like.js"></script>
+	<script src="/js/board/comment.js"></script>
 </body>
 </html>
