@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.domain.Comment;
 
@@ -35,5 +36,14 @@ public interface CommentMapper {
 			where id = #{id}
 			""")
 	Comment selectById(Integer id);
+
+	
+	@Update("""
+			update Comment
+			set
+				content = #{content}
+			where id = #{id}
+			""")
+	Integer update(Comment comment);
 
 }
