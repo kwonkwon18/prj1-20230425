@@ -98,10 +98,23 @@
 
 
 					<div id="commentContainer">
-						<div>댓글 입력창 : 전송</div>
-						<div>댓글1 내용 : 누가 : 언제</div>
-						<div>댓글2 내용 : 누가 : 언제</div>
-						<div>댓글3 내용 : 누가 : 언제</div>
+
+						<div id="addcommentContainer">
+							<textarea name="" id="commentTextArea" cols="30" rows="10"></textarea>
+							<button id="sendCommentBtn">댓글 달기</button>
+						</div>
+						
+						<div id = "updateCommentContainer">
+							<textarea id="commentUpdateTextArea" cols="30" rows="10"></textarea>
+							<button id = "updateCommentBtn">수정</button>
+						</div>
+
+						<div id="commentListContainer">
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+
 					</div>
 
 
